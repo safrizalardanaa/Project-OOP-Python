@@ -1,0 +1,31 @@
+from IPython.display import clear_output
+
+class Heroes:
+    def __init__(self, name, health, damage, defence):
+        self.name = name
+        self.health = health
+        self.damage = damage
+        self.defence = defence
+        
+    def attack(self, enemy):
+        print(self.name,'attack',enemy.name)
+        enemy.health -= int(self.damage/enemy.defence)
+            
+        if enemy.health <= 0:
+            clear_output(wait=False)
+            print(enemy.name,'die')
+        else:
+            print('Remaining health of',self.name,'is',self.health)
+            enemy.attacked(self)
+    
+    def attacked(self, enemy):
+        print('Remaining health of',self.name,'is',self.health)
+        input("Press Enter to continue...")
+        clear_output(wait=False)
+        self.attack(enemy)
+        
+babarian_king = Heroes('Babarian King', 1000, 450, 50)
+archer_queen = Heroes('Archer Queen', 350, 150, 10)
+grand_warden = Heroes('Grand Warden', 500, 200, 25)
+
+babarian_king.attack(archer_queen)
