@@ -1,21 +1,31 @@
+import random
 from IPython.display import clear_output
 
 class Heroes:
-    def __init__(self, name, health, damage, defence):
+    def __init__(self, name, health, damage, defence, miss_rate):
         self.name = name
         self.health = health
         self.damage = damage
         self.defence = defence
+        self.miss_rate = miss_rate
         
     def attack(self, enemy):
         print(self.name,'attack',enemy.name)
-        enemy.health -= int(self.damage/enemy.defence)
+        
+        random_float = random.random() #Returns a random float number between 0 and 1
+        print(random_float)
+        if random_float > enemy.miss_rate:
+            enemy.health -= int(self.damage/enemy.defence)
             
-        if enemy.health <= 0:
-            clear_output(wait=False)
-            print(enemy.name,'die')
+            "If enemy's health below than zero then program will stop"
+            if enemy.health <= 0:
+                clear_output(wait=False)
+                print(enemy.name,'die')
+            else:
+                print('Remaining health of',self.name,'is',self.health)
+                enemy.attacked(self)
         else:
-            print('Remaining health of',self.name,'is',self.health)
+            print(self.name,'missed')
             enemy.attacked(self)
     
     def attacked(self, enemy):
@@ -24,8 +34,8 @@ class Heroes:
         clear_output(wait=False)
         self.attack(enemy)
         
-babarian_king = Heroes('Babarian King', 1000, 450, 50)
-archer_queen = Heroes('Archer Queen', 350, 150, 10)
-grand_warden = Heroes('Grand Warden', 500, 200, 25)
+babarian_king = Heroes('Babarian King', 1000, 300, 30, 0.05)
+archer_queen = Heroes('Archer Queen', 350, 150, 10, 0.85)
+grand_warden = Heroes('Grand Warden', 500, 200, 25, 0.45)
 
 babarian_king.attack(archer_queen)
